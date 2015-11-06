@@ -80,6 +80,7 @@ public class JN {
 	 */
 	public void sendMessage (ByteBuf msg){
 		if (!nodeServer.getServerClients().isEmpty()){
+			//should copy for second schannel group
 			ByteBuf clone = msg.copy();
 			nodeServer.sendMsgToAllServerCients(clone);
 		}
