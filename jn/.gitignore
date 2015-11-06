@@ -1,0 +1,6 @@
+/repackage.cmd
+/.settings/
+/bin/
+/target/
+/.classpath
+/.project
