@@ -70,7 +70,7 @@ public class JNSendMessageTest {
 		prop.setProperty(NodeServer.PROP_NODE_PORT, "10503");
 		prop.setProperty(Nodes.PROP_NODES, "127.0.0.1");
 		JN jnNode = new JN(prop, new SimpleMessageProcessor()).sync();
-		//send message
+		//send message to all nodes in cluster
 		ByteBuf msg = Unpooled.buffer();
 		msg.writeByte(JNMessage.USER_DEFINED_MSG);
 		MessageUtils.writeUTFString(msg, "testMsg");
