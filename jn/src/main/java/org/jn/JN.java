@@ -63,7 +63,7 @@ public class JN {
 	}
 	
 	/**
-	 * Get node state
+	 * Get current node state
 	 * @author ArtjomAminov
 	 * 5 Nov 2015 13:40:13
 	 * @return
