@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -->
+<configuration monitorInterval="10">
+
+	<appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%t] %d{HH:mm:ss,SSS} %-5p %c{1} - %m%n" />
+		</Console>
+	</appenders>
+	<loggers>
+		<Root level="DEBUG" includeLocation="false">
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</loggers>
+	
+</configuration>
