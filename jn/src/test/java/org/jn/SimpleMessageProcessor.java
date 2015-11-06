@@ -23,6 +23,5 @@ public class SimpleMessageProcessor extends MessageProcessor{
 		if (sysCommand == JNMessage.USER_DEFINED_MSG){
 			LOGGER.info(jn.toString() + " User defined msg: " + MessageUtils.readUTFString(msg));
 		}
-	}
-	
+	}	
 }
