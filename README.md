@@ -1,5 +1,5 @@
 # JN
-<p>JN - Java Node is simple java clustering - messaging library based on <a href="http://netty.io">Netty</a> framework  Apache 2.0 license. Java 8.	<img src="https://github.com/artjoma/JN/blob/master/jn/misc/schema.png" />
+<p>JN - Java Node is simple java clustering - messaging library based on <a href="http://netty.io">Netty</a> framework  . Apache 2.0 license. Java 8.	<img src="https://github.com/artjoma/JN/blob/master/jn/misc/schema.png" />
 </p>
 <h4>Features</h4>
 <ul>
