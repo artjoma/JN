@@ -40,7 +40,7 @@ public abstract class MessageProcessor {
 						int serverPort = msg.readInt();
 						NodeServer nodeServer = jn.getNodeServer();
 						ByteBuf response = ctx.alloc().buffer();
-						JNMessage.getAllNodesResponse(response, nodeServer.getServerClients(), jn.getNodes().getNodeClients().keySet());
+						JNMessage.getAllNodesResponse(response, nodeServer.getServerClients(), jn.getNodes().getNodeClients().values());
 						ctx.writeAndFlush(response);
 						nodeServer.getServerClients().put(ctx.channel(), host + ":" + serverPort);
 						break;

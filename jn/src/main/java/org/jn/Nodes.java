@@ -10,6 +10,7 @@ import org.jn.node.client.NodeClient;
 import org.jn.node.message.JNMessage;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.group.ChannelGroup;
 /**
@@ -22,7 +23,7 @@ public class Nodes {
 	private static final Logger LOGGER = LogManager.getLogger(Nodes.class);
 	public static final String PROP_NODES = "nodes";
 
-	private Map<String, NodeClient> nodeClients = null;
+	private Map<Channel, NodeClient> nodeClients = null;
 	
 	private JN jn;
 	private ChannelGroup channels = null;
@@ -78,7 +79,7 @@ public class Nodes {
 				client.sendMessageSync(JNMessage.getAllNodesRequest(jn.getNodeServer().getPort()));
 				channels.add(client.getChannel());
 				//add node to list
-				nodeClients.put(client.getNodeId(), client);
+				nodeClients.put(client.getChannel(), client);
 			}else{
 				jn.setJnState(JNState.SYNCHRONIZED);
 				LOGGER.info("Single node");
@@ -100,7 +101,7 @@ public class Nodes {
 					try{
 						NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
 						client.sendMessageSync(JNMessage.setNodeServerPort(jn.getNodeServer().getPort()));
-						nodeClients.put(addr, client);
+						nodeClients.put(client.getChannel(), client);
 						channels.add(client.getChannel());
 					}catch(Exception e){
 						LOGGER.debug("Can't connect to node: " + addr);
@@ -119,7 +120,7 @@ public class Nodes {
 	 * @param nodeClient
 	 */
 	public void removeClient (NodeClient nodeClient){
-		nodeClients.remove(nodeClient.getNodeId()).destroy();
+		nodeClients.remove(nodeClient.getChannel()).destroy();
 	}
 	
 	/**
@@ -138,7 +139,7 @@ public class Nodes {
 		return client.sendMessage(msg);
 	}
 
-	public Map<String, NodeClient> getNodeClients() {
+	public Map<Channel, NodeClient> getNodeClients() {
 		return nodeClients;
 	}
 	

@@ -1,8 +1,10 @@
 package org.jn.node.message;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.Set;
+
+import org.jn.node.client.NodeClient;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -47,11 +49,11 @@ public class JNMessage {
 		return msg; 
 	}
 	
-	public static void getAllNodesResponse (ByteBuf msg, Map<Channel, String> serverClients, Set<String> nodes){
+	public static void getAllNodesResponse (ByteBuf msg, Map<Channel, String> serverClients, Collection<NodeClient> nodes){
 		msg.writeByte(GET_ALL_NODES_RESPONSE_MSG);
 		StringBuilder allNodes = new StringBuilder(serverClients.entrySet().stream().map(x->x.getValue()).
 				collect(Collectors.joining(";")));
-		allNodes.append(nodes.stream().map(Object::toString).collect(Collectors.joining(";")));
+		allNodes.append(nodes.stream().map(NodeClient::getNodeId).collect(Collectors.joining(";")));
 		MessageUtils.writeUTFString(msg, allNodes.toString());
 	}
 	/**
