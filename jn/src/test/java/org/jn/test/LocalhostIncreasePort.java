@@ -1,7 +1,8 @@
-package org.jn;
+package org.jn.test;
 
 import java.util.Properties;
 
+import org.jn.JN;
 import org.junit.Test;
 
 import junit.framework.Assert;
