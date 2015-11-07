@@ -36,11 +36,11 @@ public class JN {
  	
 	public JN(Properties prop, MessageProcessor incomeMessageProcessor) throws Exception{
 		LOGGER.info("Start init JN");
+		
 		this.jnState = JNState.SHUTDOWN;
 		this.properties = prop;
 		this.incomeMessageProcessor = incomeMessageProcessor;
 		incomeMessageProcessor.setJn(this);
-		
 		
 		this.nodeServer = new NodeServer(properties, incomeMessageProcessor);
 		nodeServer.init();
