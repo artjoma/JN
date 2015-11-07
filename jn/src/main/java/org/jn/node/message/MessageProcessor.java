@@ -35,7 +35,7 @@ public abstract class MessageProcessor {
 				byte sysCmd = msg.readByte();
 				switch (sysCmd) {
 					// GET all nodes list
-					case 0:{
+					case JNMessage.GET_ALL_NODES_REQUEST_MSG:{
 						String host = JNUtils.remoteHost(ctx.channel());
 						int serverPort = msg.readInt();
 						NodeServer nodeServer = jn.getNodeServer();
@@ -46,8 +46,8 @@ public abstract class MessageProcessor {
 						break;
 					}
 					// Response all nodes list
-					case 1: jn.getNodes().createClients(MessageUtils.readUTFString(msg)); break;
-					case 2: {
+					case JNMessage.GET_ALL_NODES_RESPONSE_MSG: jn.getNodes().createClients(MessageUtils.readUTFString(msg)); break;
+					case JNMessage.SET_NODE_SERVER_PORT_REQUEST_MSG: {
 						NodeServer nodeServer = jn.getNodeServer();
 						String host = JNUtils.remoteHost(ctx.channel());
 						int serverPort = msg.readInt();
