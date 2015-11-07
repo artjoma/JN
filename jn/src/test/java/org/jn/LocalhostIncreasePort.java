@@ -24,7 +24,6 @@ public class LocalhostIncreasePort {
 		JN node3 = new JN(new Properties (), new SimpleMessageProcessor());
 		Assert.assertEquals(14502, node3.getNodeServer().getPort());
 		
-		Thread.sleep(500);
 		node1.shutdown();
 		node2.shutdown();
 		node3.shutdown();
