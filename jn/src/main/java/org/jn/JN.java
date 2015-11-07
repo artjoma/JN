@@ -29,7 +29,6 @@ public class JN {
 	
  	private MessageProcessor incomeMessageProcessor;
  	private Properties properties;
- 	
  	private JNState jnState;
  	//start time
  	private Date startTime;
