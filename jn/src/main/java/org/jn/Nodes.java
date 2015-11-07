@@ -12,9 +12,6 @@ import org.jn.node.message.JNMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.ChannelGroupFuture;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.concurrent.GlobalEventExecutor;
 /**
  * Nodes details
  * @author ArtjomAminov
@@ -24,11 +21,11 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 public class Nodes {
 	private static final Logger LOGGER = LogManager.getLogger(Nodes.class);
 	public static final String PROP_NODES = "nodes";
-	//netty group of channels
-	private ChannelGroup allConnected = null;
+
 	private Map<String, NodeClient> nodeClients = null;
 	
 	private JN jn;
+	private ChannelGroup channels = null;
 	
 	private void validate (Properties prop) throws Exception{
 		if (prop.contains(PROP_NODES)){
@@ -38,11 +35,11 @@ public class Nodes {
 		}
 	}
 	
-	public Nodes(Properties prop, JN jn) throws Exception{
-		
+	public Nodes(Properties prop, JN jn, ChannelGroup channels) throws Exception{
 		this.jn = jn;
 		validate (prop);
-		this.allConnected = new DefaultChannelGroup("all-clients", GlobalEventExecutor.INSTANCE);
+		
+		this.channels = channels;
 		this.nodeClients = new HashMap<>();
 		
 		String nodesLine = prop.getProperty(PROP_NODES);
@@ -79,7 +76,7 @@ public class Nodes {
 			if (done){
 				//send message GET_ALL_NODES_REQUEST_MSG
 				client.sendMessageSync(JNMessage.getAllNodesRequest(jn.getNodeServer().getPort()));
-				allConnected.add(client.getChannel());
+				channels.add(client.getChannel());
 				//add node to list
 				nodeClients.put(client.getNodeId(), client);
 			}else{
@@ -104,7 +101,7 @@ public class Nodes {
 						NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
 						client.sendMessageSync(JNMessage.setNodeServerPort(jn.getNodeServer().getPort()));
 						nodeClients.put(addr, client);
-						allConnected.add(client.getChannel());
+						channels.add(client.getChannel());
 					}catch(Exception e){
 						LOGGER.debug("Can't connect to node: " + addr);
 					}
@@ -134,16 +131,7 @@ public class Nodes {
 		for (NodeClient nodeClient : nodeClients.values()){
 			nodeClient.destroy();
 		}
-		allConnected.close();
 		nodeClients.clear();
-	}
-	
-	public ChannelGroupFuture sendMessageToAll (ByteBuf msg){
-		if (allConnected.isEmpty()){
-			return null;
-		}else{
-			return allConnected.writeAndFlush(msg);
-		}
 	}
 	
 	public ChannelFuture sendMessageToNode (NodeClient client, ByteBuf msg){
@@ -153,6 +141,5 @@ public class Nodes {
 	public Map<String, NodeClient> getNodeClients() {
 		return nodeClients;
 	}
-	
 	
 }

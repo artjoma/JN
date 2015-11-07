@@ -10,7 +10,6 @@ import org.jn.JNUtils;
 import org.jn.node.message.MessageProcessor;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,14 +18,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.ChannelGroupFuture;
-import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
  * Current node server socket
@@ -40,13 +36,13 @@ public class NodeServer {
 	public static final int DEFAULT_NODE_PORT = 14500;
 	public static final String PROP_NODE_PORT = "port";
 	
-	private ChannelGroup channels = null;
 	//Store all clients. host:port (server port client node)
 	private Map<Channel, String> serverClients = null; 
 	private EventLoopGroup bossGroup;
 	private EventLoopGroup workerGroup;
 	private int port = DEFAULT_NODE_PORT;
 	private MessageProcessor messageProcessor;
+	private ChannelGroup channels;
 	
 	private void validate (Properties prop) throws Exception{
 		if (prop.containsKey(NodeServer.PROP_NODE_PORT)){
@@ -54,11 +50,12 @@ public class NodeServer {
 		}
 	}
 	
-	public NodeServer(Properties properties, MessageProcessor messageProcessor) throws Exception{
+	public NodeServer(Properties properties, MessageProcessor messageProcessor, ChannelGroup channels) throws Exception{
 		this.serverClients = new HashMap<>();
 		this.messageProcessor = messageProcessor;
+		this.channels = channels;
 		validate (properties);
-		this.channels = new DefaultChannelGroup("server-clients", GlobalEventExecutor.INSTANCE);
+		
 	}
 	
 	public void init () throws Exception{
@@ -99,23 +96,11 @@ public class NodeServer {
 	}
 	
 	/**
-	 * Send async message to all nodes.
-	 * Example : buffer = Unpooled.copiedBuffer;
-	 * @author ArtjomAminov
-	 * 1 Nov 2015 12:17:53
-	 * @param buffer
-	 */
-	public ChannelGroupFuture sendMsgToAllServerCients (ByteBuf msg){
-		return channels.writeAndFlush(msg);
-	}
-	
-	/**
 	 * Destroy server
 	 * @author ArtjomAminov
 	 * 1 Nov 2015 12:10:51
 	 */
 	public void shutdown (){
-		channels.close(); 
 		bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
 	}

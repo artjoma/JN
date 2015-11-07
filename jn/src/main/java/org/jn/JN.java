@@ -9,6 +9,9 @@ import org.jn.node.message.MessageProcessor;
 import org.jn.node.server.NodeServer;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
  * JAVA node framework main class
@@ -26,6 +29,10 @@ public class JN {
 	 * Current node server socket.
 	 */
 	private NodeServer nodeServer = null;
+	/**
+	 * Store clients and server clients channels
+	 */
+	private ChannelGroup channels = null;
 	
  	private MessageProcessor incomeMessageProcessor;
  	private Properties properties;
@@ -36,18 +43,24 @@ public class JN {
 	public JN(Properties prop, MessageProcessor incomeMessageProcessor) throws Exception{
 		LOGGER.info("Start init JN");
 		
+		this.channels = new DefaultChannelGroup("all-nodes", GlobalEventExecutor.INSTANCE);
 		this.jnState = JNState.SHUTDOWN;
 		this.properties = prop;
 		this.incomeMessageProcessor = incomeMessageProcessor;
 		incomeMessageProcessor.setJn(this);
 		
-		this.nodeServer = new NodeServer(properties, incomeMessageProcessor);
+		this.nodeServer = new NodeServer(properties, incomeMessageProcessor, channels);
 		nodeServer.init();
-		this.nodes = new Nodes (properties, this);
+		this.nodes = new Nodes (properties, this, channels);
 		
 		this.startTime = new Date ();
 		LOGGER.info("End init JN");
 	}
+	
+	protected void addChannel (){
+		
+	}
+	
 	/**
 	 * Is node ok.
 	 * Wait until node complete SYNCHRONIZATION
@@ -61,7 +74,6 @@ public class JN {
 		}
 		return this;
 	}
-	
 	/**
 	 * Get current node state
 	 * @author ArtjomAminov
@@ -79,12 +91,9 @@ public class JN {
 	 * @param msg
 	 */
 	public void sendMessage (ByteBuf msg){
-		if (!nodeServer.getServerClients().isEmpty()){
-			//should copy for second schannel group
-			ByteBuf clone = msg.copy();
-			nodeServer.sendMsgToAllServerCients(clone);
+		if (!channels.isEmpty()){
+			channels.writeAndFlush(msg);
 		}
-		nodes.sendMessageToAll(msg);
 	}
 	
 	/**
@@ -104,7 +113,11 @@ public class JN {
 	 */
 	public void shutdown (){
 		LOGGER.info("Start shutdown");
+		//channels
+		channels.close(); 
+		//clients
 		nodes.shutdown();
+		//server
 		nodeServer.shutdown();
 		jnState = JNState.SHUTDOWN;
 		LOGGER.info("End shutdown");
