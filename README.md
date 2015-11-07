@@ -6,6 +6,7 @@
   <li>Simple usage</li>
   <li>NIO asynchronous event-driven model</li>
   <li>Messages based on heap/off-heap <a href="http://netty.io/5.0/api/io/netty/buffer/ByteBuf.html">ByteBuf</a></li>
+  <li>Message header has 4 bytes - message size, byte - command. System commands have a range from -1 to -128. User defined from 0 to 127. </li>
 </ul>
 <h4>Kick start</h4>
   <pre><code>
