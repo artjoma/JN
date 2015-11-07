@@ -102,8 +102,8 @@ public class JN {
 	 * 6 Nov 2015 11:10:57
 	 */
 	public int getNodesCount (){
-		//nodes + server clients + self
-		return nodes.getNodeClients().size() + nodeServer.getServerClients().size() + 1;
+		//size + self
+		return channels.size() + 1;
 	}
 	
 	/**
