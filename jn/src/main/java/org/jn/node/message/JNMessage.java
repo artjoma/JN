@@ -9,7 +9,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
 /**
- * JN messages
+ * JN messages. 
+ * Message id's 0..29 reserved for future
  * @author ArtjomAminov
  *
  * 1 Nov 2015 14:50:38
@@ -31,7 +32,7 @@ public class JNMessage {
 	/**
 	 * User defined message
 	 */
-	public static final byte USER_DEFINED_MSG = 50;
+	public static final byte USER_DEFINED_MSG = 30;
 	
 	/**
 	 * GET_ALL_NODES_MSG
