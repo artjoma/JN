@@ -57,10 +57,6 @@ public class JN {
 		LOGGER.info("End init JN");
 	}
 	
-	protected void addChannel (){
-		
-	}
-	
 	/**
 	 * Is node ok.
 	 * Wait until node complete SYNCHRONIZATION
