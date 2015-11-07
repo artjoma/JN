@@ -64,6 +64,6 @@ public abstract class MessageProcessor {
 		}
 	}
 	
-	public abstract void processMessage (int msgSize, byte sysCommand, ChannelHandlerContext ctx, ByteBuf msg);
+	public abstract void processMessage (int msgSize, byte command, ChannelHandlerContext ctx, ByteBuf msg);
 	
 }
