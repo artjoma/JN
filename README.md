@@ -24,9 +24,7 @@
 			jn2 = startNode2 ();
 			jn3 = startNode3 ();
 			jn4 = startNode4 ();
-		
 			Thread.sleep(500);
-			
 		}catch(Exception e){
 			LOGGER.error("Err: " + e.getMessage(), e);
 			Assert.fail(e.getMessage());
