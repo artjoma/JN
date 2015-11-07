@@ -12,7 +12,7 @@ import io.netty.channel.Channel;
 
 /**
  * JN messages. 
- * Message id's 0..29 reserved for future
+ * Message id's -1..-128 is system messages reserved.
  * @author ArtjomAminov
  *
  * 1 Nov 2015 14:50:38
@@ -21,20 +21,20 @@ public class JNMessage {
 	/**
 	 * REQUEST Get all nodes 
 	 */
-	public static final byte GET_ALL_NODES_REQUEST_MSG = 0;
+	public static final byte GET_ALL_NODES_REQUEST_MSG = -1;
 	/**
 	 * RESPONSE Get all nodes
 	 */
-	public static final byte GET_ALL_NODES_RESPONSE_MSG = 1;
+	public static final byte GET_ALL_NODES_RESPONSE_MSG = -2;
 	/**
 	 * Send to node this node server port
 	 */
-	public static final byte SET_NODE_SERVER_PORT_REQUEST_MSG = 2;
+	public static final byte SET_NODE_SERVER_PORT_REQUEST_MSG = -3;
 	
 	/**
 	 * User defined message
 	 */
-	public static final byte USER_DEFINED_MSG = 30;
+	public static final byte USER_DEFINED_MSG = 0;
 	
 	/**
 	 * GET_ALL_NODES_MSG
