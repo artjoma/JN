@@ -29,9 +29,11 @@ public class Nodes {
 	private ChannelGroup channels = null;
 	
 	private void validate (Properties prop) throws Exception{
-		if (prop.contains(PROP_NODES)){
-			if (((String)prop.get(PROP_NODES)).trim().length() < 8){
-				throw new Exception("Property 'nodes' has incorrect value !");
+		if (prop != null){
+			if (prop.contains(PROP_NODES)){
+				if (((String)prop.get(PROP_NODES)).trim().length() < 8){
+					throw new Exception("Property 'nodes' has incorrect value !");
+				}
 			}
 		}
 	}
@@ -43,7 +45,10 @@ public class Nodes {
 		this.channels = channels;
 		this.nodeClients = new HashMap<>();
 		
-		String nodesLine = prop.getProperty(PROP_NODES);
+		String nodesLine = null;
+		if (prop != null){
+			nodesLine = prop.getProperty(PROP_NODES);
+		}
 		
 		if (nodesLine == null){
 			LOGGER.info("Property not found: '" + PROP_NODES + "' single node");

@@ -45,8 +45,10 @@ public class NodeServer {
 	private ChannelGroup channels;
 	
 	private void validate (Properties prop) throws Exception{
-		if (prop.containsKey(NodeServer.PROP_NODE_PORT)){
-			this.port = JNUtils.validateNetworkPort((String)prop.get(PROP_NODE_PORT));
+		if (prop != null){
+			if (prop.containsKey(NodeServer.PROP_NODE_PORT)){
+				this.port = JNUtils.validateNetworkPort((String)prop.get(PROP_NODE_PORT));
+			}
 		}
 	}
 	

@@ -40,6 +40,10 @@ public class JN {
  	//start time
  	private Date startTime;
  	
+ 	public JN (MessageProcessor incomeMessageProcessor) throws Exception{
+ 		this (null, incomeMessageProcessor);
+ 	}
+ 	
 	public JN(Properties prop, MessageProcessor incomeMessageProcessor) throws Exception{
 		LOGGER.info("Start init JN");
 		
