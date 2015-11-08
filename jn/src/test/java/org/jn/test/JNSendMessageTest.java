@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jn.JN;
 import org.jn.Nodes;
-import org.jn.node.message.JNMessage;
+import org.jn.node.message.JNMessageSys;
 import org.jn.node.message.MessageUtils;
 import org.jn.node.server.NodeServer;
 import org.junit.Test;
@@ -74,7 +74,7 @@ public class JNSendMessageTest {
 		JN jnNode = new JN(prop, new SimpleMessageProcessor()).sync();
 		//send message to all nodes in cluster
 		ByteBuf msg = Unpooled.buffer();
-		msg.writeByte(JNMessage.USER_DEFINED_MSG);
+		msg.writeByte(SimpleMessageProcessor.USER_DEFINED_MSG);
 		MessageUtils.writeUTFString(msg, "testMsg");
 		jnNode.sendMessage(msg);
 		return jnNode;	

@@ -17,7 +17,7 @@ import io.netty.channel.Channel;
  *
  * 1 Nov 2015 14:50:38
  */
-public class JNMessage {
+public class JNMessageSys {
 	/**
 	 * REQUEST Get all nodes 
 	 */
@@ -30,11 +30,6 @@ public class JNMessage {
 	 * Send to node this node server port
 	 */
 	public static final byte SET_NODE_SERVER_PORT_REQUEST_MSG = -3;
-	
-	/**
-	 * User defined message
-	 */
-	public static final byte USER_DEFINED_MSG = 0;
 	
 	/**
 	 * GET_ALL_NODES_MSG

@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jn.node.client.NodeClient;
-import org.jn.node.message.JNMessage;
+import org.jn.node.message.JNMessageSys;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -81,7 +81,7 @@ public class Nodes {
 			
 			if (done){
 				//send message GET_ALL_NODES_REQUEST_MSG
-				client.sendMessageSync(JNMessage.getAllNodesRequest(jn.getNodeServer().getPort()));
+				client.sendMessageSync(JNMessageSys.getAllNodesRequest(jn.getNodeServer().getPort()));
 				channels.add(client.getChannel());
 				//add node to list
 				nodeClients.put(client.getChannel(), client);
@@ -105,7 +105,7 @@ public class Nodes {
 				if (addr.length() > 6){
 					try{
 						NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
-						client.sendMessageSync(JNMessage.setNodeServerPort(jn.getNodeServer().getPort()));
+						client.sendMessageSync(JNMessageSys.setNodeServerPort(jn.getNodeServer().getPort()));
 						nodeClients.put(client.getChannel(), client);
 						channels.add(client.getChannel());
 					}catch(Exception e){

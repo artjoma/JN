@@ -35,19 +35,19 @@ public abstract class MessageProcessor {
 				byte sysCmd = msg.readByte();
 				switch (sysCmd) {
 					// GET all nodes list
-					case JNMessage.GET_ALL_NODES_REQUEST_MSG:{
+					case JNMessageSys.GET_ALL_NODES_REQUEST_MSG:{
 						String host = JNUtils.remoteHost(ctx.channel());
 						int serverPort = msg.readInt();
 						NodeServer nodeServer = jn.getNodeServer();
 						ByteBuf response = ctx.alloc().buffer();
-						JNMessage.getAllNodesResponse(response, nodeServer.getServerClients(), jn.getNodes().getNodeClients().values());
+						JNMessageSys.getAllNodesResponse(response, nodeServer.getServerClients(), jn.getNodes().getNodeClients().values());
 						ctx.writeAndFlush(response);
 						nodeServer.getServerClients().put(ctx.channel(), host + ":" + serverPort);
 						break;
 					}
 					// Response all nodes list
-					case JNMessage.GET_ALL_NODES_RESPONSE_MSG: jn.getNodes().createClients(MessageUtils.readUTFString(msg)); break;
-					case JNMessage.SET_NODE_SERVER_PORT_REQUEST_MSG: {
+					case JNMessageSys.GET_ALL_NODES_RESPONSE_MSG: jn.getNodes().createClients(MessageUtils.readUTFString(msg)); break;
+					case JNMessageSys.SET_NODE_SERVER_PORT_REQUEST_MSG: {
 						NodeServer nodeServer = jn.getNodeServer();
 						String host = JNUtils.remoteHost(ctx.channel());
 						int serverPort = msg.readInt();

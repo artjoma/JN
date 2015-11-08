@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jn.JN;
 import org.jn.Nodes;
-import org.jn.node.message.JNMessage;
 import org.jn.node.message.MessageUtils;
 import org.jn.node.server.NodeServer;
 import org.junit.Test;
@@ -39,7 +38,7 @@ public class JNSendMessageHardTest {
 			pool.submit(()->{
 				for (int i = 0; i < 100; i++){
 					ByteBuf msg = Unpooled.buffer();
-					msg.writeByte(JNMessage.USER_DEFINED_MSG);
+					msg.writeByte(SimpleMessageProcessor.USER_DEFINED_MSG);
 					MessageUtils.writeUTFString(msg, "jn1 - > testMsg:" + i);
 					jn1.sendMessage(msg);
 				}
@@ -48,7 +47,7 @@ public class JNSendMessageHardTest {
 			pool.submit(()->{
 				for (int i = 0; i < 100; i++){
 					ByteBuf msg = Unpooled.buffer();
-					msg.writeByte(JNMessage.USER_DEFINED_MSG);
+					msg.writeByte(SimpleMessageProcessor.USER_DEFINED_MSG);
 					MessageUtils.writeUTFString(msg, "jn2 - > testMsg:" + i);
 					jn2.sendMessage(msg);
 				}
@@ -57,7 +56,7 @@ public class JNSendMessageHardTest {
 			pool.submit(()->{
 				for (int i = 0; i < 100; i++){
 					ByteBuf msg = Unpooled.buffer();
-					msg.writeByte(JNMessage.USER_DEFINED_MSG);
+					msg.writeByte(SimpleMessageProcessor.USER_DEFINED_MSG);
 					MessageUtils.writeUTFString(msg, "jn3 - > testMsg:" + i);
 					jn3.sendMessage(msg);
 				}
@@ -66,7 +65,7 @@ public class JNSendMessageHardTest {
 			pool.submit(()->{
 				for (int i = 0; i < 100; i++){
 					ByteBuf msg = Unpooled.buffer();
-					msg.writeByte(JNMessage.USER_DEFINED_MSG);
+					msg.writeByte(SimpleMessageProcessor.USER_DEFINED_MSG);
 					MessageUtils.writeUTFString(msg, "jn4 - > testMsg:" + i);
 					jn4.sendMessage(msg);
 				}
