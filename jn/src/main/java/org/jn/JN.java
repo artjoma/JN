@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jn.node.message.JNMessage;
 import org.jn.node.message.MessageProcessor;
 import org.jn.node.server.NodeServer;
 
@@ -93,6 +94,12 @@ public class JN {
 	public void sendMessage (ByteBuf msg){
 		if (!channels.isEmpty()){
 			channels.writeAndFlush(msg);
+		}
+	}
+	
+	public void sendMessage (JNMessage message){
+		if (!channels.isEmpty()){
+			channels.writeAndFlush(message.serialize());
 		}
 	}
 	

@@ -11,7 +11,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
 /**
- * JN messages. 
+ * JN messages for system 
  * Message id's -1..-128 is system messages reserved.
  * @author ArtjomAminov
  *

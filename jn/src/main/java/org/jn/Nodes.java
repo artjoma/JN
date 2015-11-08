@@ -39,11 +39,11 @@ public class Nodes {
 	}
 	
 	public Nodes(Properties prop, JN jn, ChannelGroup channels) throws Exception{
+		this.nodeClients = new HashMap<>();
 		this.jn = jn;
 		validate (prop);
-		
 		this.channels = channels;
-		this.nodeClients = new HashMap<>();
+		
 		
 		String nodesLine = null;
 		if (prop != null){
@@ -68,12 +68,12 @@ public class Nodes {
 			NodeClient client = null;
 			while (!done && i < nodesCount){
 				String node = nodes[i];
-				if (node.length() > 0){
+				if (node.length() > 3){
 					try{
 						client = new NodeClient (node, this, jn.getIncomeMessageProcessor());
 						done = true;
 					}catch(Exception e){
-						LOGGER.error("Can't create connection to ");
+						LOGGER.debug("Err connect to: " + node);
 					}
 				}
 				i++;
@@ -102,7 +102,7 @@ public class Nodes {
 			String [] array = line.split("\\;");
 			LOGGER.debug("Start create clients from list: [" + line + "] size: " + array.length);
 			for (String addr : array){
-				if (addr.length() > 6){
+				if (addr.length() > 4){
 					try{
 						NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
 						client.sendMessageSync(JNMessageSys.setNodeServerPort(jn.getNodeServer().getPort()));
