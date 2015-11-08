@@ -3,7 +3,6 @@ package org.jn.test.serialization;
 import java.util.Date;
 
 import org.jn.node.message.JNMessage;
-import org.jn.test.SimpleMessageProcessor;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

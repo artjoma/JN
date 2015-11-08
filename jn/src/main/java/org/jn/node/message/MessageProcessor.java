@@ -1,14 +1,10 @@
 package org.jn.node.message;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jn.JN;
 import org.jn.JNUtils;
 import org.jn.node.server.NodeServer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 /**

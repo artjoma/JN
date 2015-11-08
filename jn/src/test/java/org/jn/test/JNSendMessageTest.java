@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jn.JN;
 import org.jn.Nodes;
-import org.jn.node.message.JNMessageSys;
 import org.jn.node.message.MessageUtils;
 import org.jn.node.server.NodeServer;
 import org.junit.Test;
