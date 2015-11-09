@@ -91,12 +91,12 @@ public class NodeClient {
         try{
         	// Start the client.
         	this.channel = b.connect(host, port).syncUninterruptibly().channel();
+        	LOGGER.debug("End init connection. Connected to: " + nodeId);
         }catch(Exception e){
         	this.clientState = NodeClientState.SHUTDOWN;
         	throw e;
         }
 		this.clientState = NodeClientState.ACTIVE;
-		LOGGER.debug("End init. Connected to: " + nodeId);
 	}
 	
 	/**
@@ -107,11 +107,12 @@ public class NodeClient {
 	 */
 	public void reconnect (){
 		new Thread (()->{
+			LOGGER.debug("Start reconnect");
 			try {
 				Thread.sleep(250);
 				initConnection();
 			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
+				LOGGER.debug("Can't reconnect", e);
 			}
 		}).start();
 	}
