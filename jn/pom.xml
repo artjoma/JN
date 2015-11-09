@@ -4,7 +4,7 @@
 
 	<groupId>org.jn.test</groupId>
 	<artifactId>jn</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0</version>
 	<packaging>jar</packaging>
 	<!-- Java Node -->
 	<name>jn</name>
