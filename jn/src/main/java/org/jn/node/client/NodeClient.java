@@ -65,7 +65,7 @@ public class NodeClient {
 	 * 30 Oct 2015 17:58:37
 	 */
 	private void initConnection () throws Exception{
-		LOGGER.debug("Start init node. Host.port: "+ nodeId);
+		LOGGER.debug("Start init connection. Host.port: "+ nodeId);
 		this.clientState = NodeClientState.INIT;
 		
         this.workerGroup = new NioEventLoopGroup();
@@ -98,6 +98,24 @@ public class NodeClient {
 		this.clientState = NodeClientState.ACTIVE;
 		LOGGER.debug("End init. Connected to: " + nodeId);
 	}
+	
+	/**
+	 * Reconnect
+	 * @author ArtjomAminov
+	 * 9 Nov 2015 13:13:00
+	 * @param addr
+	 */
+	public void reconnect (){
+		new Thread (()->{
+			try {
+				Thread.sleep(250);
+				initConnection();
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+		}).start();
+	}
+	
 	/**
 	 * Destroy client
 	 * @author ArtjomAminov
@@ -193,11 +211,15 @@ class NodeClientHandler extends ChannelHandlerAdapter {
     public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
     	super.disconnect(ctx, promise);
     	nodes.removeClient(nodeClient);
+    	//reconnect
+    	nodeClient.reconnect();
     }
     
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
     	nodes.removeClient(nodeClient);
         ctx.close();
+        //reconnect
+    	nodeClient.reconnect();
     }
 }

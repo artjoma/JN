@@ -102,22 +102,36 @@ public class Nodes {
 			String [] array = line.split("\\;");
 			LOGGER.debug("Start create clients from list: [" + line + "] size: " + array.length);
 			for (String addr : array){
-				if (addr.length() > 4){
-					try{
-						NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
-						client.sendMessageSync(JNMessageSys.setNodeServerPort(jn.getNodeServer().getPort()));
-						nodeClients.put(client.getChannel(), client);
-						channels.add(client.getChannel());
-					}catch(Exception e){
-						LOGGER.debug("Can't connect to node: " + addr);
-					}
-				}
+				createClient(addr);
 			}
 			LOGGER.info("Nodes count: " + nodeClients.size());
 		}
 	
 		jn.setJnState(JNState.SYNCHRONIZED);
 	}
+
+	/**
+	 * @author ArtjomAminov
+	 * 9 Nov 2015 12:58:39
+	 * @param addr
+	 * @throws Exception
+	 * @throws InterruptedException
+	 */
+	public void createClient(String addr){
+		if (addr.length() > 4){
+			try{
+				NodeClient client = new NodeClient (addr, this, jn.getIncomeMessageProcessor());
+				client.sendMessageSync(JNMessageSys.setNodeServerPort(jn.getNodeServer().getPort()));
+				nodeClients.put(client.getChannel(), client);
+				channels.add(client.getChannel());
+			}catch(Exception e){
+				LOGGER.debug("Can't connect to node: " + addr);
+			}
+		}else{
+			LOGGER.error("Invalid host.port " + addr);
+		}
+	}
+	
 	/**
 	 * Remove and shutdown
 	 * @author ArtjomAminov
