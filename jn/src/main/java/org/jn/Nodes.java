@@ -101,13 +101,32 @@ public class Nodes {
 		if (line.length() > 5){
 			String [] array = line.split("\\;");
 			LOGGER.debug("Start create clients from list: [" + line + "] size: " + array.length);
+			int count = 0;
 			for (String addr : array){
-				createClient(addr);
+				new Thread (()->{
+					createClient(addr);
+				}).start();
+				if (count % 20 == 0){
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						LOGGER.error("Thread err: " + e.getMessage(), e);
+					}
+				}
+				count++;
 			}
-			LOGGER.info("Nodes count: " + nodeClients.size());
+			while (count != array.length){
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					LOGGER.error("Thread err: " + e.getMessage(), e);
+				}
+			}
+			
 		}
 	
 		jn.setJnState(JNState.SYNCHRONIZED);
+		LOGGER.info("State: " + JNState.SYNCHRONIZED);
 	}
 
 	/**
